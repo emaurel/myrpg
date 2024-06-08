@@ -1,0 +1,10 @@
+Name:Boat2
+Image:oeufhumpty.png
+Dialogue#
+He je t'ai vu par la fenetre
+-
+T'as essaye de casser la gueule a un gosse ??
+-
+Cette epee va m'etre plus utile que prevu
+-
+#

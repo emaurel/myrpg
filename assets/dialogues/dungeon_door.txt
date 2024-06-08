@@ -1,0 +1,14 @@
+Name:Dungeon1
+Image:door.png
+Dialogue#
+Knock Knock je suis une porte
+-
+Et tu peux pas m'ourvir maintenant desole !
+-
+T'inquietes pas je ne risque pas de bouger mdr
+-
+Si tu veux passer, il te faut une epee.
+-
+Portes toi bien AHAHAHAHA
+-
+#

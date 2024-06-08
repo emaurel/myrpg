@@ -1,0 +1,10 @@
+Name:Skull2
+Image:angry_skull.png
+Dialogue#
+Que fais tu ici ?
+-
+Tu me deranges durant ma nuit de n'os
+-
+Je vais te desosser >:( !!!! 
+-
+#
