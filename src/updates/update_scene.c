@@ -28,6 +28,28 @@ sfVector2f key_management(project_t *project)
         pos.x += project->player->speed;
         project->player->state = RUN_RIGHT;
     }
+    if (project->mouse->is_moving == true) {
+        if (project->mouse->joystick_event.axis == sfJoystickX) {
+            if (project->mouse->joystick_event.position > 50) {
+                pos.y -= project->player->speed;
+                project->player->state = RUN_UP;
+            }
+            if (project->mouse->joystick_event.position < -50) {
+                pos.y += project->player->speed;
+                project->player->state = RUN_DOWN;
+            }
+        }
+        if (project->mouse->joystick_event.axis == sfJoystickY) {
+            if (project->mouse->joystick_event.position > 50) {
+                pos.x += project->player->speed;
+                project->player->state = RUN_RIGHT;
+            }
+            if (project->mouse->joystick_event.position < -50) {
+                pos.x -= project->player->speed;
+                project->player->state = RUN_LEFT;
+            }
+        }
+    }
     return pos;
 }
 

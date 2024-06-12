@@ -38,9 +38,35 @@ void main_menu_event(project_t *project)
         if (project->event.type == sfEvtClosed) {
             sfRenderWindow_close(project->window);
         }
-        if (project->event.type == sfEvtMouseButtonPressed)
+        if (project->event.type == sfEvtMouseButtonPressed || project->event.type == sfEvtJoystickButtonPressed)
             main_menu_button_event(project);
         slider_event(project, project->event);
+        if (project->event.type == sfEvtJoystickMoved) {
+            if (project->event.joystickMove.position < 0.001 && project->event.joystickMove.position > -0.001) {
+                project->mouse->is_moving = false;
+            } else {
+                project->mouse->is_moving = true;
+                project->mouse->joystick_event = project->event.joystickMove;
+            }
+        }
+    }
+    if (project->mouse->is_moving == true) {
+        if (project->mouse->joystick_event.axis == sfJoystickX) {
+            if (project->mouse->joystick_event.position > 50) {
+                project->mouse->mouse_pos.y -= 10;
+            }
+            if (project->mouse->joystick_event.position < -50) {
+                project->mouse->mouse_pos.y += 10;
+            }
+        }
+        if (project->mouse->joystick_event.axis == sfJoystickY) {
+            if (project->mouse->joystick_event.position > 50) {
+                project->mouse->mouse_pos.x += 10;
+            }
+            if (project->mouse->joystick_event.position < -50) {
+                project->mouse->mouse_pos.x -= 10;
+            }
+        }
     }
 }
 
@@ -53,9 +79,38 @@ void pause_menu_event(project_t *project)
         if (project->event.type == sfEvtKeyPressed &&
         project->event.key.code == sfKeyEscape)
             project->status = GAME;
-        if (project->event.type == sfEvtMouseButtonPressed) {
+        if (project->event.type == sfEvtJoystickButtonPressed &&
+        project->event.joystickButton.button == 9)
+            project->status = GAME;
+        if (project->event.type == sfEvtMouseButtonPressed || project->event.type == sfEvtJoystickButtonPressed) {
             pause_menu_button_event(project);
         }
         slider_event_pause(project, project->event);
+        if (project->event.type == sfEvtJoystickMoved) {
+            if (project->event.joystickMove.position < 0.001 && project->event.joystickMove.position > -0.001) {
+                project->mouse->is_moving = false;
+            } else {
+                project->mouse->is_moving = true;
+                project->mouse->joystick_event = project->event.joystickMove;
+            }
+        }
+    }
+    if (project->mouse->is_moving == true) {
+        if (project->mouse->joystick_event.axis == sfJoystickX) {
+            if (project->mouse->joystick_event.position > 50) {
+                project->mouse->mouse_pos.y -= 10;
+            }
+            if (project->mouse->joystick_event.position < -50) {
+                project->mouse->mouse_pos.y += 10;
+            }
+        }
+        if (project->mouse->joystick_event.axis == sfJoystickY) {
+            if (project->mouse->joystick_event.position > 50) {
+                project->mouse->mouse_pos.x += 10;
+            }
+            if (project->mouse->joystick_event.position < -50) {
+                project->mouse->mouse_pos.x -= 10;
+            }
+        }
     }
 }

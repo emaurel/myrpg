@@ -81,7 +81,7 @@ box_t *get_box_with_coord(project_t *project, sfVector2f pos)
 
 void select_box(project_t *project, sfVector2f pos)
 {
-    sfVector2f new_pos = convert_mouse_position(project, pos);
+    sfVector2f new_pos = (sfVector2f) {project->mouse->mouse_pos.x, project->mouse->mouse_pos.y}; //convert_mouse_position(project, pos);
     box_t *box = get_box_with_coord(project, new_pos);
 
     if (check_shift_click(project, box))

@@ -39,9 +39,10 @@ void update_description(project_t *project, inventory_t *inventory, box_t *box)
 
 void update_hover_or_selected_box(project_t *project, box_t *box)
 {
-    sfVector2i pos = sfMouse_getPositionRenderWindow(WINDOW);
-    sfVector2f new_pos = convert_mouse_position(project, (sfVector2f)
-    {pos.x, pos.y});
+    // sfVector2i pos = sfMouse_getPositionRenderWindow(WINDOW);
+    sfVector2i new_pos = (sfVector2i) {project->mouse->mouse_pos.x, project->mouse->mouse_pos.y};
+    // sfVector2f new_pos = convert_mouse_position(project, (sfVector2f)
+    // {pos.x, pos.y});
     sfVector2f pos_box = sfRectangleShape_getPosition(box->shape);
     sfVector2f size_box = sfRectangleShape_getSize(box->shape);
 

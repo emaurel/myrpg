@@ -102,5 +102,13 @@ project_t *init_project(void)
     project->scenes = NULL;
     project->scene = NULL;
     project->status = MAIN_MENU;
+    project->mouse = malloc(sizeof(mouse_t));
+    project->mouse->mouse_pos = (sfVector2i) {500, 500};
+    project->mouse->mouse_scale = (sfVector2f) {0.05, 0.05};
+    project->mouse->sprite = sfSprite_create();
+    sfTexture *mouse_texture = sfTexture_createFromFile("assets/cross_cursor.png", NULL);
+    sfSprite_setTexture(project->mouse->sprite, mouse_texture, sfTrue);
+    sfSprite_setScale(project->mouse->sprite, project->mouse->mouse_scale);
+    project->mouse->is_moving = false;
     return init_project_bis(project);
 }

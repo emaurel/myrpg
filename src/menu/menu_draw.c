@@ -37,6 +37,11 @@ void draw_main_menu(project_t *project)
     if (project->main_menu->state == SETTINGS) {
         update_settings(project);
     }
+    sfFloatRect res = sfSprite_getGlobalBounds(project->mouse->sprite);
+    sfVector2f pos = {.x = project->mouse->mouse_pos.x - (res.height / 2), .y = project->mouse->mouse_pos.y - (res.width / 2)};
+    sfSprite_setPosition(project->mouse->sprite, pos);
+    sfSprite_setScale(project->mouse->sprite, project->mouse->mouse_scale);
+    sfRenderWindow_drawSprite(project->window, project->mouse->sprite, NULL);
 }
 
 void draw_pause_menu(project_t *project)
@@ -57,4 +62,9 @@ void draw_pause_menu(project_t *project)
     if (project->pause_menu->state == SETTINGS) {
         update_settings_pause(project);
     }
+    sfFloatRect res = sfSprite_getGlobalBounds(project->mouse->sprite);
+    sfVector2f pos = {.x = project->mouse->mouse_pos.x - (res.height / 2), .y = project->mouse->mouse_pos.y - (res.width / 2)};
+    sfSprite_setPosition(project->mouse->sprite, pos);
+    sfSprite_setScale(project->mouse->sprite, project->mouse->mouse_scale);
+    sfRenderWindow_drawSprite(project->window, project->mouse->sprite, NULL);
 }

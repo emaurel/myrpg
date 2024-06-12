@@ -7,12 +7,19 @@
 
 #include "project.h"
 
-void switch_state_inventory(inventory_t *inventory)
+void switch_state_inventory(project_t *project, inventory_t *inventory)
 {
-    if (inventory->is_active)
+    if (inventory->is_active) {
         inventory->is_active = false;
-    else
+        project->mouse->mouse_pos = project->mouse->old_mouse_pos;
+        project->mouse->mouse_scale = project->mouse->old_mouse_scale;
+    } else {
+        project->mouse->old_mouse_pos = project->mouse->mouse_pos;
+        project->mouse->old_mouse_scale = project->mouse->mouse_scale;
         inventory->is_active = true;
+        project->mouse->mouse_pos = (sfVector2i) {project->player->pos.x, project->player->pos.y};
+        project->mouse->mouse_scale = (sfVector2f) {project->mouse->mouse_scale.x * 0.2, project->mouse->mouse_scale.y * 0.2};
+    }
 }
 
 void update_selected_box(project_t *project)

@@ -7,11 +7,10 @@
 
 #include "project.h"
 
-sfBool is_button_clicked(project_t *project, button_t *button,
-sfMouseButtonEvent *evt)
+sfBool is_button_clicked(project_t *project, button_t *button, sfVector2f evt_pos)
 {
     sfFloatRect res = sfRectangleShape_getGlobalBounds(button->rect);
-    sfVector2i mouse = (sfVector2i) {evt->x, evt->y};
+    sfVector2i mouse = (sfVector2i) {evt_pos.x, evt_pos.y};
     sfView *view = sfView_create();
     sfView_setSize(view, (sfVector2f) {1920, 1080});
     sfView_setCenter(view, (sfVector2f) {1920 / 2, 1080 / 2});
@@ -67,8 +66,6 @@ sfVector2i mouse_pos)
 
 void update_button(button_t *btn, project_t *project)
 {
-    sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(WINDOW);
-
-    update_hover_button(project, btn, mouse_pos);
+    update_hover_button(project, btn, project->mouse->mouse_pos);
     sfRenderWindow_drawRectangleShape(WINDOW, btn->rect, NULL);
 }

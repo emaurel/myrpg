@@ -27,9 +27,10 @@ void update_box_bis(project_t *project, box_t *box, sfVector2f new_mouse_pos)
 
 void update_box(project_t *project, box_t *box)
 {
-    sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(WINDOW);
-    sfVector2f new_mouse_pos = convert_mouse_position(project, (sfVector2f)
-    {mouse_pos.x, mouse_pos.y});
+    // sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(WINDOW);
+    sfVector2f new_mouse_pos = (sfVector2f) {project->mouse->mouse_pos.x, project->mouse->mouse_pos.y};
+    // sfVector2f new_mouse_pos = convert_mouse_position(project, (sfVector2f)
+    // {mouse_pos.x, mouse_pos.y});
 
     sfRectangleShape_setTexture(box->shape, box->box_texture, sfTrue);
     sfRectangleShape_setPosition(box->shape, (sfVector2f)
@@ -76,4 +77,9 @@ void update_inventory(project_t *project)
     if (!project->inventory->is_active)
         return;
     update_inventory_bis(project);
+    sfFloatRect res = sfSprite_getGlobalBounds(project->mouse->sprite);
+    sfVector2f pos = {.x = project->mouse->mouse_pos.x - (res.height / 2), .y = project->mouse->mouse_pos.y - (res.width / 2)};
+    sfSprite_setPosition(project->mouse->sprite, pos);
+    sfSprite_setScale(project->mouse->sprite, project->mouse->mouse_scale);
+    sfRenderWindow_drawSprite(project->window, project->mouse->sprite, NULL);
 }

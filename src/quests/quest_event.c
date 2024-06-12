@@ -20,6 +20,17 @@ void quest_event_bis(project_t *project, sfEvent event)
         project->quests->is_act_disp = 0;
         return;
     }
+    if (event.type == sfEvtJoystickButtonPressed && event.joystickButton.button == 2
+    && project->quests->is_act_disp == 0) {
+        project->quests->is_act_disp = -1;
+        return;
+    }
+    if (event.type == sfEvtJoystickButtonPressed && event.joystickButton.button == 2
+    && (project->quests->is_act_disp == -1 ||
+    project->quests->is_act_disp == 1)) {
+        project->quests->is_act_disp = 0;
+        return;
+    }
 }
 
 void quest_event(project_t *project, sfEvent event)
@@ -31,6 +42,17 @@ void quest_event(project_t *project, sfEvent event)
         return;
     }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyA
+    && project->quests->is_act_disp == 1) {
+        project->quests->is_act_disp = -1;
+        return;
+    }
+    if (event.type == sfEvtJoystickButtonPressed && event.joystickButton.button == 3
+    && (project->quests->is_act_disp == -1 ||
+    project->quests->is_act_disp == 0)) {
+        project->quests->is_act_disp = 1;
+        return;
+    }
+    if (event.type == sfEvtJoystickButtonPressed && event.joystickButton.button == 3
     && project->quests->is_act_disp == 1) {
         project->quests->is_act_disp = -1;
         return;

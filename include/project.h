@@ -57,6 +57,16 @@ typedef struct quest_s {
     sfText *finished_quests_text;
 } quest_t;
 
+typedef struct mouse_s {
+    sfSprite *sprite;
+    sfVector2i mouse_pos;
+    sfVector2f mouse_scale;
+    bool is_moving;
+    sfJoystickMoveEvent joystick_event;
+    sfVector2i old_mouse_pos;
+    sfVector2f old_mouse_scale;
+} mouse_t;
+
 typedef struct project_s {
     sfRenderWindow *window;
     inventory_t *inventory;
@@ -83,6 +93,7 @@ typedef struct project_s {
     sfSoundBuffer *soundbuffer;
     sfSound *sound;
     credit_t *credit;
+    mouse_t *mouse;
 } project_t;
 
 void update_scene(project_t *project);

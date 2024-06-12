@@ -64,7 +64,7 @@ void switch_elem_box(project_t *project, box_t *new_box, box_t *selected_box)
 void unselect_box(project_t *project, sfVector2f pos)
 {
     box_t *selected_box = get_box_selected(project);
-    sfVector2f new_pos = convert_mouse_position(project, pos);
+    sfVector2f new_pos = (sfVector2f) {project->mouse->mouse_pos.x, project->mouse->mouse_pos.y}; // convert_mouse_position(project, pos);
     box_t *new_box = get_box_with_coord(project, new_pos);
 
     project->inventory->state = NONE2;

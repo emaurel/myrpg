@@ -15,6 +15,14 @@ int can_slider_move(sfFloatRect rect, sfEvent event)
     return 0;
 }
 
+int can_slider_move_joystick(sfFloatRect rect, project_t *project)
+{
+    if (project->mouse->mouse_pos.x >= rect.left &&
+    project->mouse->mouse_pos.x <= (rect.width + rect.left))
+        return 1;
+    return 0;
+}
+
 void slider_event(project_t *project, sfEvent event)
 {
     sfFloatRect rect = sfRectangleShape_getGlobalBounds
@@ -27,11 +35,21 @@ void slider_event(project_t *project, sfEvent event)
     if (event.type == sfEvtMouseButtonPressed &&
     sfFloatRect_contains(&rect, event.mouseButton.x, event.mouseButton.y))
         project->main_menu->is_sliding = 1;
-    if (event.type == sfEvtMouseButtonReleased)
+    if (event.type == sfEvtJoystickButtonPressed &&
+    sfFloatRect_contains(&rect, project->mouse->mouse_pos.x, project->mouse->mouse_pos.y))
+        project->main_menu->is_sliding = 1;
+    if (event.type == sfEvtMouseButtonReleased || event.type == sfEvtJoystickButtonReleased)
         project->main_menu->is_sliding = 0;
     if (event.type == sfEvtMouseMoved && project->main_menu->is_sliding == 1
     && can_slider_move(rect, event)) {
         project->main_menu->slider->position_circle.x = event.mouseMove.x - rad;
+        cir_pos_in_rect = project->main_menu->slider->position_circle.x
+        - project->main_menu->slider->position.x;
+        project->main_menu->slider->value = (cir_pos_in_rect / 289) * 100;
+    }
+    if (project->mouse->is_moving && project->main_menu->is_sliding == 1
+    && can_slider_move_joystick(rect, project)) {
+        project->main_menu->slider->position_circle.x = project->mouse->mouse_pos.x - rad;
         cir_pos_in_rect = project->main_menu->slider->position_circle.x
         - project->main_menu->slider->position.x;
         project->main_menu->slider->value = (cir_pos_in_rect / 289) * 100;
@@ -50,7 +68,10 @@ void slider_event_pause(project_t *project, sfEvent event)
     if (event.type == sfEvtMouseButtonPressed &&
     sfFloatRect_contains(&rect, event.mouseButton.x, event.mouseButton.y))
         project->pause_menu->is_sliding = 1;
-    if (event.type == sfEvtMouseButtonReleased)
+    if (event.type == sfEvtJoystickButtonPressed &&
+    sfFloatRect_contains(&rect, project->mouse->mouse_pos.x, project->mouse->mouse_pos.y))
+        project->pause_menu->is_sliding = 1;
+    if (event.type == sfEvtMouseButtonReleased || event.type == sfEvtJoystickButtonReleased)
         project->pause_menu->is_sliding = 0;
     if (event.type == sfEvtMouseMoved && project->pause_menu->is_sliding == 1
     && can_slider_move(rect, event)) {
@@ -60,12 +81,29 @@ void slider_event_pause(project_t *project, sfEvent event)
         - project->pause_menu->slider->position.x;
         project->pause_menu->slider->value = (cir_pos_in_rect / 289) * 100;
     }
+    if (project->mouse->is_moving && project->pause_menu->is_sliding == 1
+    && can_slider_move_joystick(rect, project)) {
+        project->pause_menu->slider->position_circle.x =
+        project->mouse->mouse_pos.x - rad;
+        cir_pos_in_rect = project->pause_menu->slider->position_circle.x
+        - project->pause_menu->slider->position.x;
+        project->pause_menu->slider->value = (cir_pos_in_rect / 289) * 100;
+    }
 }
 
 void button_click(button_t *button, project_t *project, sfEvent event)
 {
     if (event.type == sfEvtMouseButtonPressed) {
-        if (button->is_clicked(project, button, &event.mouseButton)) {
+        sfVector2f evt_pos = {event.mouseButton.x, event.mouseButton.y};
+        if (button->is_clicked(project, button, evt_pos)) {
+            sfSound_stop(project->main_menu->sound);
+            sfSound_play(project->main_menu->sound);
+            button->clicked(project);
+        }
+    }
+    if (event.type == sfEvtJoystickButtonPressed) {
+        sfVector2f evt_pos = {project->mouse->mouse_pos.x, project->mouse->mouse_pos.y};
+        if (button->is_clicked(project, button, evt_pos)) {
             sfSound_stop(project->main_menu->sound);
             sfSound_play(project->main_menu->sound);
             button->clicked(project);
